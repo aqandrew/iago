@@ -57,9 +57,9 @@ class othello(object):
                     self.gameRunning = False ## Noone can move anymore - game over
                 ## else - show tooltip for a while notifying the user
                 elif turn == bot_turn:
-                    self.menu.show_tooltip("Arvuti passib") 
+                    self.menu.show_tooltip("Computer has no moves") 
                 else:
-                    self.menu.show_tooltip("Mängija passib")
+                    self.menu.show_tooltip("Player has no moves")
                 turn = 1 - turn
                 continue
             if turn == bot_turn:
@@ -120,11 +120,11 @@ class othello(object):
         ##Show new game menu with corrent message about who won
         s = self.game.get_score()
         if s[bot_turn] > s[1 - bot_turn]:
-            message = 'Arvuti võitis!'
+            message = 'Computer wins!'
         elif s[bot_turn] < s[1 - bot_turn]:
-            message = 'Mängija võitis!'
+            message = 'Player wins!'
         else:
-            message = 'Viik!'
+            message = 'Draw!'
         return self.menu.show_menu(message)
         
 
@@ -187,7 +187,7 @@ class othello(object):
 if __name__ == "__main__":
     #import time
     game = othello()
-    player = game.menu.show_menu("Vali, kes alustab:")
+    player = game.menu.show_menu("Choose starting player:")
     try:
         while True:
             player = game.play_game(1 - player)
