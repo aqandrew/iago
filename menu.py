@@ -42,12 +42,12 @@ class Menu(object):
         #print the text
         vmessage = self.victoryFont.render(message, True, red)
         screen.blit(vmessage, (w / 2 - vmessage.get_width() / 2, h / 4))
-        compButtons = [self.normalFont.render('Arvuti alustab', True, color)
+        compButtons = [self.normalFont.render('Iago starts', True, color)
                        for color in [white, red]]
         wb = compButtons[0].get_width() / 2
         comp = hoverable.Hoverable((w / 4 - wb, 0.6 * h), 0, *compButtons)
         comp.draw(0)
-        normButtons = [self.normalFont.render('Mängija alustab', True, color)
+        normButtons = [self.normalFont.render('Player starts', True, color)
                        for color in [white, red]]
         wb = normButtons[0].get_width() / 2
         norm = hoverable.Hoverable((3 * w / 4 - wb, 0.6 * h), 0, *normButtons)

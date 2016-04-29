@@ -19,7 +19,7 @@ class OthelloBoard(object):
         pygame.init()
         self.screen = pygame.display.set_mode((self.windowsize,
                                                int(self.windowsize * 1.05)))
-        pygame.display.set_caption('::Othello::')
+        pygame.display.set_caption('::Iago::')
         self.screen.fill(background)
         self._load_icons()
         #self.screen.blit(self.back, (0, 0))
@@ -43,14 +43,14 @@ class OthelloBoard(object):
         
         """
         
-        ssize = self.font.render('Mängija: 33+33', True, white).get_width()
+        ssize = self.font.render('Player: 33+33', True, white).get_width()
         if blackIsPlayer:
-            must = self.font.render('Mängija: %d' % b, True, black)
-            valge = self.font.render('Arvuti: %d' % w, True, white)
+            must = self.font.render('Player: %d' % b, True, black)
+            valge = self.font.render('Computer: %d' % w, True, white)
         else:
-            must = self.font.render('Arvuti: %d' % b, True, black)
-            valge = self.font.render('Mängija: %d' % w, True, white)    
-        vs = self.font.render('Mängija: 1', True, white).get_width()
+            must = self.font.render('Computer: %d' % b, True, black)
+            valge = self.font.render('Player: %d' % w, True, white)    
+        vs = self.font.render('Player: 1', True, white).get_width()
         startx = self.buttonsize * 0.3 + self.start_x
         inversex = self.windowsize - startx - vs
         starty = int(self.windowsize * 0.96)        
@@ -130,8 +130,8 @@ class OthelloBoard(object):
         self.red =   [pygame.transform.smoothscale(x, (int(self.buttonsize * 0.9),
                                                       int(self.buttonsize * 0.9)))
                        for x in self.orig_red]
-        uus1 = self.font.render('Uus mäng', True, white)
-        uus2 = self.font.render('Uus mäng', True, red)
+        uus1 = self.font.render('New Turn', True, white)
+        uus2 = self.font.render('New Turn', True, red)
         x = self.windowsize / 2 - uus1.get_width() / 2
         y = int(self.windowsize * 0.96)
         #print 'hoverable'
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     pygame.display.flip()
     time.sleep(2)
     d = menu.Menu()
-    d.show_menu('Valge võitis!')
+    d.show_menu('Computer wins!')
     pygame.display.flip()
     time.sleep(1)
 #    game.clear_button(4, 4)
