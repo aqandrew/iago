@@ -1,6 +1,5 @@
 import urllib
 
-
 #Function to get URLs for past World Othello Championship game transcripts
 def pullURLs(inputURL):
 	handle = urllib.urlopen(inputURL)
@@ -66,9 +65,20 @@ def pullData(transcriptURL):
 	return fourth
 
 allGames = pullData(urls)
+noRepeats = []
+
+for i in range(len(allGames)):
+	b = True
+	for j in range((i+1),len(allGames)):
+		if allGames[i][0] == allGames[j][0]:
+			if allGames[i][1] == allGames[j][1]:
+				b = False
+	if b == True:
+		if len(allGames[i][1]) == 120:
+			noRepeats.append(allGames[i])
 
 f = open('transcripts.txt', 'w')
-for i in allGames:
+for i in noRepeats:
 	if len(i[0]) > 1 and len(i[1]) > 1:
 		f.write("{0}, {1} \n" .format(i[0],i[1]))
 f.close()
