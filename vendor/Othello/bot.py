@@ -136,6 +136,35 @@ class Bot(object):
             the ones in the corners and sides
             """
         return self.score[self.color] - self.score[1 - self.color] 
+
+#############################################################################################
+"""
+    def heuristic2(self):
+        ## find power spot score & multiply weight
+        p = 
+        p *= 10
+
+        ## find coin parity & multiply weight
+        c = 
+        c *= .1
+
+        ## find mobility & multiply weight
+        m = 
+        m *= 1
+        ## find stability & multiply weight
+        s = 
+        s *= 1
+
+        ## return score
+        score = p + c + m + s
+        return score
+
+    def p_score(self):
+
+"""
+
+
+#############################################################################################
     
     def alpha_beta(self, depth, player, alpha = oo, beta = oo):
         if depth == 0:
