@@ -1,5 +1,6 @@
 from random import choice
-import time  
+import time
+import killtables  
 #import othelloDiagnostics
 oo = 9876 ## infinity for alpha-beta
 ALPHA_DEPTH = 4 ## max depth for alpha-beta
@@ -25,6 +26,8 @@ class IagoBot(object):
     """Simple bot using a shallow alpha-beta pruning search for 
         finding moves.
     """
+
+    
     def __init__(self, color):
         self.color = color
         self.board = [[0] * 8 for _ in xrange(8)]
@@ -34,6 +37,7 @@ class IagoBot(object):
         self.place(4, 4, 1)
         self.place(3, 4, 0)
         self.place(4, 3, 0)
+        
         
         
     def check_board(self, board):
@@ -142,9 +146,12 @@ class IagoBot(object):
                 ## undo move
                 self.undo_move(x, y, flips, self.color)     
             if bestMove is not None:
+                killSuggest = killtables.hello()
                 bestMove = choice(bestMove) ## pick one of the "best" moves at random. :)
+                if killSuggest is not None:
+                    bestMove = killSuggest   
                 flips = self.list_flips(bestMove[0], bestMove[1], self.color)
-                self.make_move(bestMove[0], bestMove[1], flips, self.color)      
+                self.make_move(bestMove[0], bestMove[1], flips, self.color) 
             return bestMove
     
     def heuristic(self):
@@ -176,7 +183,6 @@ class IagoBot(object):
     def alpha_beta(self, depth, player, alpha = oo, beta = oo):
         if depth == 0:
             return self.heuristic()
-
         children = self.get_ordering(player)
         ## print len(children)
         if not children:

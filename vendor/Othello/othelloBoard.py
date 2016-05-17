@@ -97,12 +97,6 @@ class OthelloBoard(object):
         self.screen.blit(self.trans[color], (x + self.buttonsize * 0.05 + self.linewidth / 2,
                                               y + self.buttonsize * 0.05 + self.linewidth / 2))
     
-    def draw_red(self, x, y, color):
-        """Draws a red game button - used for showing impossible moves"""
-        x, y = self.get_pos(x, y)
-        self.screen.blit(self.red[color], (x + self.buttonsize * 0.05 + self.linewidth / 2,
-                                              y + self.buttonsize * 0.05 + self.linewidth / 2))
-
     def clear_button(self, x, y):
         x, y = self.get_pos(x, y)
         r = pygame.Rect(x + self.linewidth/2,
@@ -117,8 +111,6 @@ class OthelloBoard(object):
                        pygame.image.load("Pics/white.png").convert_alpha()]
         self.orig_trans = [pygame.image.load("Pics/black2.png").convert_alpha(),
                        pygame.image.load("Pics/white2.png").convert_alpha()]
-        self.orig_red = [pygame.image.load("Pics/black3.png").convert_alpha(),
-                       pygame.image.load("Pics/white3.png").convert_alpha()]
         
         self.button = [pygame.transform.smoothscale(x, (int(self.buttonsize * 0.9),
                                                       int(self.buttonsize * 0.9)))
@@ -127,9 +119,6 @@ class OthelloBoard(object):
                                                       int(self.buttonsize * 0.9)))
                        for x in self.orig_trans]
         self.font = pygame.font.SysFont('jokerman', 20)
-        self.red =   [pygame.transform.smoothscale(x, (int(self.buttonsize * 0.9),
-                                                      int(self.buttonsize * 0.9)))
-                       for x in self.orig_red]
         uus1 = self.font.render('New Turn', True, white)
         uus2 = self.font.render('New Turn', True, red)
         x = self.windowsize / 2 - uus1.get_width() / 2

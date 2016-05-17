@@ -15,6 +15,7 @@ import controller
 import othelloBoard
 import bot
 import iagoBot
+import killtables
 from pygame.locals import *
 
 
@@ -32,6 +33,7 @@ class othello(object):
         self.menu2 = menu.Menu()
         self.gameRunning = False
         self.newButtonActive = False
+        killtables.init()
         
     def init_game(self):
         self.game = controller.OthelloGame()
@@ -57,7 +59,7 @@ class othello(object):
         ibot = iagoBot.IagoBot(bot_turn)
         turn = 0
         while self.gameRunning:
-            print turn
+            #print turn
             ## players can't move
             if not self.game.can_move(turn):
                 if not self.game.can_move(1 - turn):
@@ -79,6 +81,8 @@ class othello(object):
                         self.board.draw_button(a, b, turn)
                         self.game.place(a, b, turn)
                     self.board.draw_button(x, y, turn)
+                    killtables.movesTaken.append([x+1,y+1])
+                    killtables.hello()
                     self.game.place(x, y, turn)
                     ibot.check_board(self.game.board) ## Test if the bot has correct data
                 else:
@@ -112,6 +116,7 @@ class othello(object):
                             self.board.draw_button(c, r, turn)
                             self.game.place(c, r, turn)
                         self.board.draw_button(x, y, turn)
+                        killtables.movesTaken.append([x+1,y+1])
                         self.game.place(x, y, turn)
                         ibot.make_move(x, y, converts, turn)
                         #switch turn
@@ -123,6 +128,7 @@ class othello(object):
             elif hover is not None:
                 self.hover(hover, turn)
                 pygame.display.flip()
+            
 
         ##Show new game menu with corrent message about who won
         s = self.game.get_score()
@@ -146,7 +152,7 @@ class othello(object):
         abot = bot.Bot(1-bot_turn)
         turn = 0
         while self.gameRunning:
-            print turn
+            #print turn
             ## players can't move
             if not self.game.can_move(turn):
                 if not self.game.can_move(1 - turn):
@@ -276,12 +282,6 @@ class othello(object):
                 plus[turn] += len(converts) + 1
                 b, w = self.game.get_score()
                 self.board.draw_score(b, w, self.bot_turn, plus)
-            elif converts is not False:
-                ## impossible move
-                self.board.draw_red(x, y, turn)
-                self.prevHover = (x, y)
-                self.putback = []
-        
 
 if __name__ == "__main__":
     #import time
@@ -296,6 +296,7 @@ if __name__ == "__main__":
         try:
             while True:
                 player = game.play_game_bots(player)
+                
         finally:
             pygame.quit()
     else:
