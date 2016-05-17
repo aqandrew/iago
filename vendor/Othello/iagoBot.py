@@ -1,8 +1,9 @@
 from random import choice
 import time  
+import sys
 #import othelloDiagnostics
 oo = 9876 ## infinity for alpha-beta
-ALPHA_DEPTH = 4 ## max depth for alpha-beta
+ALPHA_DEPTH = 5 ## max depth for alpha-beta
 CORNER = 9.5
 SIDE = 1.5
 
@@ -20,6 +21,21 @@ def timeit(method):
 
     return timed
 
+def free_space(board):
+    free = 0
+    for i in xrange(8):
+            for j in xrange(8):
+                if board[i][j] == 0:
+                    free = free + 1
+    return free
+
+def print_board(board):
+    for i in xrange(8):
+        for j in xrange(8):
+            sys.stdout.write(str(board[i][j]))
+            sys.stdout.write(",")
+        print ""
+    print ""   
 
 class IagoBot(object):
     """Simple bot using a shallow alpha-beta pruning search for 
@@ -41,6 +57,8 @@ class IagoBot(object):
         for i in xrange(8):
             for j in xrange(8):
                 assert self.board[i][j] == board[i][j], (i, j, self.board[i][j], board[i][j])
+
+        #print_board(board)
 
     def list_flips(self, c, r, color):
         """lists stones to flip when player "color" places a stone at c, r"""
@@ -121,6 +139,10 @@ class IagoBot(object):
     def get_move(self):
         #return self.get_move2()
         ## Gets the best move with alpha_beta
+        print free_space(self.board)
+        global ALPHA_DEPTH
+        if free_space(self.board) < 12:
+            ALPHA_DEPTH = 8
         moves = self.get_ordering(self.color)
         if moves:
             x, y = moves[0][1]
