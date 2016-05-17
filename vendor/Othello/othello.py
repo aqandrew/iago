@@ -64,7 +64,7 @@ class othello(object):
                     self.gameRunning = False ## Noone can move anymore - game over
                 ## else - show tooltip for a while notifying the user
                 elif turn == bot_turn:
-                    self.menu.show_tooltip("Computer has no moves") 
+                    self.menu.show_tooltip("Iago has no moves") 
                 else:
                     self.menu.show_tooltip("Player has no moves")
                 turn = 1 - turn
@@ -127,7 +127,7 @@ class othello(object):
         ##Show new game menu with corrent message about who won
         s = self.game.get_score()
         if s[bot_turn] > s[1 - bot_turn]:
-            message = 'Computer wins!'
+            message = 'Iago wins!'
         elif s[bot_turn] < s[1 - bot_turn]:
             message = 'Player wins!'
         else:
@@ -153,9 +153,9 @@ class othello(object):
                     self.gameRunning = False ## Noone can move anymore - game over
                 ## else - show tooltip for a while notifying the user
                 elif turn == bot_turn:
-                    self.menu.show_tooltip("Computer has no moves") 
+                    self.menu.show_tooltip("Iago has no moves") 
                 else:
-                    self.menu.show_tooltip("Player has no moves")
+                    self.menu.show_tooltip("DefaultBot has no moves")
                 turn = 1 - turn
                 continue
             if turn == bot_turn:
@@ -219,9 +219,9 @@ class othello(object):
         ##Show new game menu with corrent message about who won
         s = self.game.get_score()
         if s[bot_turn] > s[1 - bot_turn]:
-            message = 'Computer wins!'
+            message = 'Iago wins!'
         elif s[bot_turn] < s[1 - bot_turn]:
-            message = 'Player wins!'
+            message = 'DefaultBot wins!'
         else:
             message = 'Draw!'
         return self.menu.show_menu(message, "","")
@@ -286,12 +286,12 @@ class othello(object):
 if __name__ == "__main__":
     #import time
     game = othello()
-    botGame = game.menu.show_menu("Bot Game or player?", "2 Bots", "1 Bot 1 Human")
+    botGame = game.menu.show_menu("Bot game or player?", "2 Bots", "1 Bot 1 Human")
     #bot game is 1
     #human v bot is 0
     #print gameType
     if botGame:
-        player = game.menu.show_menu("Choose starting player:","defautBot","Iago")
+        player = game.menu.show_menu("Choose starting player:","DefaultBot","Iago")
         print player
         try:
             while True:
@@ -299,7 +299,7 @@ if __name__ == "__main__":
         finally:
             pygame.quit()
     else:
-        player = game.menu.show_menu("Choose starting player:","Iago","player")
+        player = game.menu.show_menu("Choose starting player:","Iago","Player")
         try:
             while True:
                 player = game.play_game_human(1 - player)
