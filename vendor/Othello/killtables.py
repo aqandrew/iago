@@ -77,35 +77,36 @@ def numToLetter(movesIn):
 
 def translateMoves(movesIn):
 	temp = []
-	if movesIn[0] == 'F5':
-		return movesIn
-	elif movesIn[0] == 'C4':
-		for m in movesIn:
-			L0 = ord(m[0]) - 64
-			L1 = 0
-			if L0 > 4.20:
-				dif = L0 - 4
-				L1 = chr(5 - dif +64)
-			else:
-				dif = 5 - L0
-				L1 = chr(4 + dif + 64)
-			N0 = int(m[1])
-			N1 = 0
-			if N0 > 4.20:
-				dif = N0 - 4
-				N1 = 5 - dif
-			else:
-				dif = 5 - N0
-				N1 = 4 + dif
-			temp.append(L1 + str(N1))
-	else:
-		for m in movesIn:
-			L0 = ord(m[0]) - 64
-			N0 = int(m[1])
-			L1 = chr(N0 + 64)
-			N1 = L0
-			temp.append(L1 + str(N1))
-	return translateMoves(temp)
+	if len(movesIn) > 0 :
+		if movesIn[0] == 'F5':
+			return movesIn
+		elif movesIn[0] == 'C4':
+			for m in movesIn:
+				L0 = ord(m[0]) - 64
+				L1 = 0
+				if L0 > 4.20:
+					dif = L0 - 4
+					L1 = chr(5 - dif +64)
+				else:
+					dif = 5 - L0
+					L1 = chr(4 + dif + 64)
+				N0 = int(m[1])
+				N1 = 0
+				if N0 > 4.20:
+					dif = N0 - 4
+					N1 = 5 - dif
+				else:
+					dif = 5 - N0
+					N1 = 4 + dif
+				temp.append(L1 + str(N1))
+		else:
+			for m in movesIn:
+				L0 = ord(m[0]) - 64
+				N0 = int(m[1])
+				L1 = chr(N0 + 64)
+				N1 = L0
+				temp.append(L1 + str(N1))
+		return translateMoves(temp)
 
 def letterToNum(move):
 	if move == 0:
@@ -115,7 +116,6 @@ def letterToNum(move):
 def getHighestWinP(dictionary):
 	highestKey = ''
 	highestWP = -1
-
 	for i in dictionary:
 		if dictionary[i][0].winP > highestWP:
 			highestKey = dictionary[i][0].value
@@ -123,6 +123,8 @@ def getHighestWinP(dictionary):
 	return highestKey
 
 def getSuggestion(trie,listIn):
+	if listIn == list():
+		return 'F5'
 	a = translateMoves(numToLetter(listIn))
 	dictionary = trie
 	for i in a:

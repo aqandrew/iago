@@ -82,7 +82,6 @@ class othello(object):
                         self.game.place(a, b, turn)
                     self.board.draw_button(x, y, turn)
                     killtables.movesTaken.append([x+1,y+1])
-                    killtables.hello()
                     self.game.place(x, y, turn)
                     ibot.check_board(self.game.board) ## Test if the bot has correct data
                 else:
@@ -175,6 +174,7 @@ class othello(object):
                         self.board.draw_button(a, b, turn)
                         self.game.place(a, b, turn)
                     self.board.draw_button(x, y, turn)
+                    killtables.movesTaken.append([x+1,y+1])
                     self.game.place(x, y, turn)
 
                     #update abot
@@ -202,6 +202,7 @@ class othello(object):
                         self.board.draw_button(a, b, turn)
                         self.game.place(a, b, turn)
                     self.board.draw_button(x, y, turn)
+                    killtables.movesTaken.append([x+1,y+1])
                     self.game.place(x, y, turn)
 
                     #update abot
