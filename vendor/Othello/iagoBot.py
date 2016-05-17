@@ -21,7 +21,7 @@ def timeit(method):
     return timed
 
 
-class Bot(object):
+class IagoBot(object):
     """Simple bot using a shallow alpha-beta pruning search for 
         finding moves.
     """
@@ -456,7 +456,7 @@ def s_score(self):
     for i in xrange(8):
         for j  in xrange(8):
             ## space is empty or opponent's, mark it 0
-            if self.board[i][j] != "my color"):
+            if self.board[i][j] != "my color":
                 stability_board[i][j] = 0
             ## check if my piece unstable
             elif self.is_unstable(i,j) == 1:
@@ -529,7 +529,7 @@ def is_legal(self,color,i,j):
                 if has_opp == 1:
                     return 1
                 else:
-                continue
+                    continue
 
             ## hits empty space
             elif self.board[a][b] == "empty":
