@@ -1,3 +1,4 @@
+#othello.py
 # -*- coding: cp1257 -*-
 """
 Othello game by Karl-Aksel Puulmann (oxymaccy@gmail.com)
@@ -7,13 +8,17 @@ Feel free to use the code in any way, but make sure to drop
 me an email if you build something interesting. :)
 
 """
-
+import sys
 import pygame
 import menu
 import controller
 import othelloBoard
 import bot
+import iagoBot
 from pygame.locals import *
+
+
+
 
 class othello(object):
     """Main class, controlling pretty much everything"""
@@ -24,6 +29,7 @@ class othello(object):
         self.board.draw_button(3, 3, 1)
         self.board.draw_button(4, 4, 1)
         self.menu = menu.Menu()
+        self.menu2 = menu.Menu()
         self.gameRunning = False
         self.newButtonActive = False
         
@@ -41,16 +47,17 @@ class othello(object):
         self.board.newGame.draw(0)
         pygame.display.flip()        
     
-    def play_game(self, bot_turn):
+    def play_game_human(self, bot_turn): #human vs IAGO
         #initialize board
         self.bot_turn = bot_turn
         self.init_game()
         self.prevHover = self.putturn = None
         self.putback = []
         self.gameRunning = True
-        abot = bot.Bot(bot_turn)
+        ibot = iagoBot.IagoBot(bot_turn)
         turn = 0
         while self.gameRunning:
+            print turn
             ## players can't move
             if not self.game.can_move(turn):
                 if not self.game.can_move(1 - turn):
@@ -63,7 +70,7 @@ class othello(object):
                 turn = 1 - turn
                 continue
             if turn == bot_turn:
-                move = abot.get_move()
+                move = ibot.get_move()
                 if move is not None:
                     ## mark and draw the move
                     x, y = move
@@ -73,7 +80,7 @@ class othello(object):
                         self.game.place(a, b, turn)
                     self.board.draw_button(x, y, turn)
                     self.game.place(x, y, turn)
-                    abot.check_board(self.game.board) ## Test if the bot has correct data
+                    ibot.check_board(self.game.board) ## Test if the bot has correct data
                 else:
                     print 'Computer passes!?!'
                     assert False, "Bot passes with a move" ## can't happen : previous if clause.
@@ -106,7 +113,7 @@ class othello(object):
                             self.game.place(c, r, turn)
                         self.board.draw_button(x, y, turn)
                         self.game.place(x, y, turn)
-                        abot.make_move(x, y, converts, turn)
+                        ibot.make_move(x, y, converts, turn)
                         #switch turn
                         turn = 1 - turn
                         b, w = self.game.get_score()
@@ -125,8 +132,100 @@ class othello(object):
             message = 'Player wins!'
         else:
             message = 'Draw!'
-        return self.menu.show_menu(message)
-        
+        return self.menu.show_menu(message, "","")
+
+
+    def play_game_bots(self, bot_turn):
+        #initialize board
+        self.bot_turn = bot_turn
+        self.init_game()
+        self.prevHover = self.putturn = None
+        self.putback = []
+        self.gameRunning = True
+        ibot = iagoBot.IagoBot(bot_turn)
+        abot = bot.Bot(1-bot_turn)
+        turn = 0
+        while self.gameRunning:
+            print turn
+            ## players can't move
+            if not self.game.can_move(turn):
+                if not self.game.can_move(1 - turn):
+                    self.gameRunning = False ## Noone can move anymore - game over
+                ## else - show tooltip for a while notifying the user
+                elif turn == bot_turn:
+                    self.menu.show_tooltip("Computer has no moves") 
+                else:
+                    self.menu.show_tooltip("Player has no moves")
+                turn = 1 - turn
+                continue
+            if turn == bot_turn:
+                move = ibot.get_move()
+                if move is not None:
+                    ## mark and draw the move
+                    x, y = move
+                    converts = self.game.list_flips(x, y, turn)
+                    for a, b in converts:
+                        self.board.clear_button(a, b)
+                        self.board.draw_button(a, b, turn)
+                        self.game.place(a, b, turn)
+                    self.board.draw_button(x, y, turn)
+                    self.game.place(x, y, turn)
+
+                    #update abot
+                    abot.make_move(x, y, converts, turn)
+                    #end update abot
+
+                    ibot.check_board(self.game.board) ## Test if the bot has correct data
+                else:
+                    print 'Computer passes!?!'
+                    assert False, "Bot passes with a move" ## can't happen : previous if clause.
+                b, w = self.game.get_score()
+                self.board.draw_score(b, w, self.bot_turn)
+                turn = 1 - turn
+                pygame.display.flip()
+                continue #skip over the rest
+            ## Human turn?
+            if turn != bot_turn:
+                move = abot.get_move()
+                if move is not None:
+                    ## mark and draw the move
+                    x, y = move
+                    converts = self.game.list_flips(x, y, turn)
+                    for a, b in converts:
+                        self.board.clear_button(a, b)
+                        self.board.draw_button(a, b, turn)
+                        self.game.place(a, b, turn)
+                    self.board.draw_button(x, y, turn)
+                    self.game.place(x, y, turn)
+
+                    #update abot
+                    ibot.make_move(x, y, converts, turn)
+                    #end update abot
+
+                    abot.check_board(self.game.board) ## Test if the bot has correct data
+                else:
+                    print 'Computer passes!?!'
+                    assert False, "Bot passes with a move" ## can't happen : previous if clause.
+                b, w = self.game.get_score()
+                self.board.draw_score(b, w, self.bot_turn)
+                turn = 1 - turn
+                pygame.display.flip()
+                continue #skip over the rest
+                        
+            elif hover is not None:
+                self.hover(hover, turn)
+                pygame.display.flip()
+
+        ##Show new game menu with corrent message about who won
+        s = self.game.get_score()
+        if s[bot_turn] > s[1 - bot_turn]:
+            message = 'Computer wins!'
+        elif s[bot_turn] < s[1 - bot_turn]:
+            message = 'Player wins!'
+        else:
+            message = 'Draw!'
+        return self.menu.show_menu(message, "","")
+                
 
     def event_handle(self):
         pygame.time.wait(10) #avoid lagging when moving the mouse around alot
@@ -187,9 +286,26 @@ class othello(object):
 if __name__ == "__main__":
     #import time
     game = othello()
-    player = game.menu.show_menu("Choose starting player:")
-    try:
-        while True:
-            player = game.play_game(1 - player)
-    finally:
-        pygame.quit()
+    botGame = game.menu.show_menu("Bot Game or player?", "2 Bots", "1 Bot 1 Human")
+    #bot game is 1
+    #human v bot is 0
+    #print gameType
+    if botGame:
+        player = game.menu.show_menu("Choose starting player:","defautBot","Iago")
+        print player
+        try:
+            while True:
+                player = game.play_game_bots(player)
+        finally:
+            pygame.quit()
+    else:
+        player = game.menu.show_menu("Choose starting player:","Iago","player")
+        try:
+            while True:
+                player = game.play_game_human(1 - player)
+        finally:
+            pygame.quit()
+    
+
+    
+    
