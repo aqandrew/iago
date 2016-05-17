@@ -30,7 +30,7 @@ class Menu(object):
         self.dimmer.restore()
         pygame.display.flip()
         
-    def show_menu(self, message):
+    def show_menu(self, message, choice1, choice2):
         """Shows a menu with the message and two buttons to choose which
         player starts next
         
@@ -42,12 +42,12 @@ class Menu(object):
         #print the text
         vmessage = self.victoryFont.render(message, True, red)
         screen.blit(vmessage, (w / 2 - vmessage.get_width() / 2, h / 4))
-        compButtons = [self.normalFont.render('Iago starts', True, color)
+        compButtons = [self.normalFont.render(choice1, True, color)
                        for color in [white, red]]
         wb = compButtons[0].get_width() / 2
         comp = hoverable.Hoverable((w / 4 - wb, 0.6 * h), 0, *compButtons)
         comp.draw(0)
-        normButtons = [self.normalFont.render('Player starts', True, color)
+        normButtons = [self.normalFont.render(choice2, True, color)
                        for color in [white, red]]
         wb = normButtons[0].get_width() / 2
         norm = hoverable.Hoverable((3 * w / 4 - wb, 0.6 * h), 0, *normButtons)
@@ -82,7 +82,6 @@ class Menu(object):
                     if norm.hovering(click):
                         self.dimmer.restore()
                         return 0
-        
         
 
 class Dimmer(object):
