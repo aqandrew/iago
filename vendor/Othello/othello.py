@@ -15,6 +15,7 @@ import controller
 import othelloBoard
 import bot
 import iagoBot
+import killtables
 from pygame.locals import *
 
 
@@ -32,6 +33,7 @@ class othello(object):
         self.menu2 = menu.Menu()
         self.gameRunning = False
         self.newButtonActive = False
+        killtables.init()
         
     def init_game(self):
         self.game = controller.OthelloGame()
@@ -79,6 +81,7 @@ class othello(object):
                         self.board.draw_button(a, b, turn)
                         self.game.place(a, b, turn)
                     self.board.draw_button(x, y, turn)
+                    killtables.movesTaken.append([x+1,y+1])
                     self.game.place(x, y, turn)
                     ibot.check_board(self.game.board) ## Test if the bot has correct data
                 else:
@@ -112,6 +115,7 @@ class othello(object):
                             self.board.draw_button(c, r, turn)
                             self.game.place(c, r, turn)
                         self.board.draw_button(x, y, turn)
+                        killtables.movesTaken.append([x+1,y+1])
                         self.game.place(x, y, turn)
                         ibot.make_move(x, y, converts, turn)
                         #switch turn
@@ -169,6 +173,7 @@ class othello(object):
                         self.board.draw_button(a, b, turn)
                         self.game.place(a, b, turn)
                     self.board.draw_button(x, y, turn)
+                    killtables.movesTaken.append([x+1,y+1])
                     self.game.place(x, y, turn)
 
                     #update abot
@@ -196,6 +201,7 @@ class othello(object):
                         self.board.draw_button(a, b, turn)
                         self.game.place(a, b, turn)
                     self.board.draw_button(x, y, turn)
+                    killtables.movesTaken.append([x+1,y+1])
                     self.game.place(x, y, turn)
 
                     #update abot
@@ -278,7 +284,6 @@ class othello(object):
                 self.board.draw_score(b, w, self.bot_turn, plus)
             elif converts is not False:
                 ## impossible move
-                self.board.draw_red(x, y, turn)
                 self.prevHover = (x, y)
                 self.putback = []
         
